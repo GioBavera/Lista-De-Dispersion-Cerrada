@@ -65,7 +65,7 @@ DICCIONARIO CREAR(){
 // Libera la memoria del diccionario
 void DestruirTablaHash(DICCIONARIO A) {
   for (int i = 0; i < NCasillas; i++) {
-    if (A[i] != VACIO && A[i] != BORRADO) {
+    if (A[i] != VACIO) {
       free(A[i]);
     }
   }
