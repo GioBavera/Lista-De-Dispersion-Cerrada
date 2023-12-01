@@ -17,11 +17,47 @@ int localiza1 (char*, DICCIONARIO);
 int MIEMBRO (char*, DICCIONARIO);
 void INSERTA (char*, DICCIONARIO);
 void SUPRIME (char*, DICCIONARIO);
+void MOSTRAR (DICCIONARIO);
 
 //--------------------- MAIN
 int main(){
     DICCIONARIO diccionario = CREAR();
-    
+    char entrada = 'Y', palabra[10], palabra2[10]; 
+
+    while(entrada == 'Y' ){
+        MOSTRAR(diccionario);
+        printf("Desea agregar un nuevo miembro? (Y/N): ");
+        scanf(" %c", &entrada);
+        if (entrada == 'Y'){
+            printf("Ingrese una cadena: ");
+            scanf(" %s", palabra);
+            INSERTA(palabra, diccionario);
+        }
+        printf("Desea saber si hay una palabra? (Y/N): ");
+        scanf(" %c", &entrada);
+        if (entrada == 'Y'){
+            printf("Cual es su palabra? ");
+            scanf(" %s", palabra);
+            if(MIEMBRO(palabra, diccionario)){
+            printf("Si esta.");
+            }else{
+            printf("No esta. ");
+            }
+        }
+        printf("Desea borrar una palabra? (Y/N): ");
+        scanf(" %c", &entrada);
+        if (entrada == 'Y'){
+            printf("Cual es su palabra? ");
+            scanf(" %s", palabra);
+            SUPRIME(palabra, diccionario);
+        }
+        printf("Desea continuar? (Y/N): ");
+        scanf(" %c", &entrada);
+        if (entrada == 'N'){
+            break;
+        }
+    }
+
     DestruirTablaHash(diccionario);
     return 0; 
 }
@@ -46,12 +82,10 @@ void DestruirTablaHash(DICCIONARIO A) {
     free(A);
 }
 
-
-// Calcula el valor de dispersión de una cadena de caracteres
 // Suma los valores numéricos de cada letra y luego toma el residuo de la división con NCasillas
 int h(char *x) {
     int suma = 0;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; x[i]; i++) {
         suma += (int)x[i];
     }
     return suma % NCasillas;
@@ -61,10 +95,6 @@ int h(char *x) {
 int localiza(char *x, DICCIONARIO A) {
     int inicial = h(x);
     int i = 0;
-
-    if (A[inicial] == VACIO) {
-        return inicial;
-    }
 
     while (i < NCasillas && A[(inicial + i) % NCasillas] != VACIO) {
         i++;
@@ -78,10 +108,6 @@ int localiza1(char *x, DICCIONARIO A) {
     int inicial = h(x); 
     int i = 0;          
 
-    if (A[inicial] == VACIO || A[inicial] == BORRADO) {
-        return inicial;
-    }
-
     while (i < NCasillas && A[(inicial + i) % NCasillas] != VACIO && A[(inicial + i) % NCasillas] != BORRADO) {
         i++;
     }
@@ -91,11 +117,16 @@ int localiza1(char *x, DICCIONARIO A) {
 
 // Devuelve 1 si x es miembro del diccionario, 0 en caso contrario
 int MIEMBRO(char *x, DICCIONARIO A) {
-    int index = localiza(x, A);
-    if (strcmp(A[index], x) == 0) {
-        return 1;
-    } else {
-        return 0;
+    int inicial = h(x), i=0;
+    while (i < NCasillas){
+        if (A[(inicial + i) % NCasillas] == VACIO){
+            return 0;
+        }
+        if (A[(inicial + i) % NCasillas] != NULL && strcmp(A[(inicial + i) % NCasillas], x) == 0){
+            return 1;
+        }
+        
+        i++;
     }
 }
 
@@ -113,11 +144,22 @@ void INSERTA(char *x, DICCIONARIO A) {
 }
 
 // Coloca BORRADO en el contenedor de X
-void SUPRIME(char *x, DICCIONARIO A) {
-    int index = localiza(x, A); 
-
-    if (strcmp(A[index], x) == 0) {
-        A[index] = BORRADO;   
+void SUPRIME(char* x, DICCIONARIO A) {
+    int siono = MIEMBRO(x, A);
+    if(siono == 0){ 
+        printf("La palabra no esta. \n");
+    }
+    int inicial = h(x), i=0;
+    for(int i=0; i<NCasillas; i++){
+        if (A[(inicial + i) % NCasillas] != NULL && strcmp(A[(inicial + i) % NCasillas], x) == 0){
+            A[(inicial + i) % NCasillas] = BORRADO;
+        }
+        i++;
     }
 }
 
+void MOSTRAR(DICCIONARIO A){
+    for(int i=0; i<25; i++){
+        printf("%s \n", A[i]);
+    }
+}
