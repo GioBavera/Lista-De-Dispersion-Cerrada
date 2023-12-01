@@ -21,29 +21,6 @@ void SUPRIME (char*, DICCIONARIO);
 //--------------------- MAIN
 int main(){
     DICCIONARIO diccionario = CREAR();
-    char entrada, palabra[25]; 
-
-    printf("Desea Agregar algun miembro (Y/N): ");
-    scanf(" %c", &entrada);
-    while ((getchar()) != '\n'); // limpia el búfer de entrada
-    while (entrada == 'Y'){
-        printf("Ingrese una cadena: ");
-        fgets(palabra, sizeof(palabra), stdin);
-        palabra[strcspn(palabra, "\n")] = 0; // elimina el carácter de nueva línea
-        INSERTA(palabra, diccionario);
-        printf("Desea seguir agregando valores (Y/N)? ");
-        scanf(" %c", &entrada);
-        while ((getchar()) != '\n'); // limpia el búfer de entrada
-    }
-    printf("Que palabra desea saber si esta? ");
-    fgets(palabra, sizeof(palabra), stdin);
-    palabra[strcspn(palabra, "\n")] = 0; // elimina el carácter de nueva línea
-
-    if(MIEMBRO(palabra, diccionario)){
-        printf("Si esta.");
-    }else{
-        printf("No esta. ");
-    }
     
     DestruirTablaHash(diccionario);
     return 0; 
