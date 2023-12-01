@@ -67,6 +67,7 @@ void menu (DICCIONARIO diccionario){
         printf("Programa Terminado.");
         break;
     default:
+        printf("Incorrecta Opcion. Vuelva a intentar.\n");
         menu(diccionario);
         break;
     }
