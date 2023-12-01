@@ -18,51 +18,59 @@ int MIEMBRO (char*, DICCIONARIO);
 void INSERTA (char*, DICCIONARIO);
 void SUPRIME (char*, DICCIONARIO);
 void MOSTRAR (DICCIONARIO);
+void menu (DICCIONARIO);
 
 //--------------------- MAIN
 int main(){
     DICCIONARIO diccionario = CREAR();
-    char entrada = 'Y', palabra[10], palabra2[10]; 
-
-    while(entrada == 'Y' ){
-        MOSTRAR(diccionario);
-        printf("Desea agregar un nuevo miembro? (Y/N): ");
-        scanf(" %c", &entrada);
-        if (entrada == 'Y'){
-            printf("Ingrese una cadena: ");
-            scanf(" %s", palabra);
-            INSERTA(palabra, diccionario);
-        }
-        printf("Desea saber si hay una palabra? (Y/N): ");
-        scanf(" %c", &entrada);
-        if (entrada == 'Y'){
-            printf("Cual es su palabra? ");
-            scanf(" %s", palabra);
-            if(MIEMBRO(palabra, diccionario)){
-            printf("Si esta.");
-            }else{
-            printf("No esta. ");
-            }
-        }
-        printf("Desea borrar una palabra? (Y/N): ");
-        scanf(" %c", &entrada);
-        if (entrada == 'Y'){
-            printf("Cual es su palabra? ");
-            scanf(" %s", palabra);
-            SUPRIME(palabra, diccionario);
-        }
-        printf("Desea continuar? (Y/N): ");
-        scanf(" %c", &entrada);
-        if (entrada == 'N'){
-            break;
-        }
-    }
-
+    menu(diccionario);
     DestruirTablaHash(diccionario);
     return 0; 
 }
 
 //--------------------- FUNCIONES
+// MENU
+void menu (DICCIONARIO diccionario){
+    int value;
+    char palabra[12];
+    printf("-----------------------\n");
+    printf("(1) Agregar Elemento\n(2) Saber si esta Elemento\n(3) Eliminar Elemento\n(4) Mostrar Tabla\n(5) Terminar\nOpcion: ");
+    scanf("%d", &value);
+    switch (value){
+    case 1:
+        printf("Ingrese una cadena (10 MAX): ");
+        scanf(" %s", palabra);
+        INSERTA(palabra, diccionario);
+        menu(diccionario);
+        break;
+    case 2:
+        printf("Cual es su palabra? ");
+        scanf(" %s", palabra);
+        if(MIEMBRO(palabra, diccionario)){
+            printf("Su palabra SI esta.\n");
+        }else{
+            printf("Su palabra NO esta.\n ");
+        }
+        menu(diccionario);
+        break;
+    case 3:
+        printf("Cual es su palabra? ");
+        scanf(" %s", palabra);
+        SUPRIME(palabra, diccionario);
+        menu(diccionario);
+        break;
+    case 4:
+        MOSTRAR(diccionario);
+        menu(diccionario);
+        break;
+    case 5:
+        printf("Programa Terminado.");
+        break;
+    default:
+        menu(diccionario);
+        break;
+    }
+}
 // Crea un diccionario vacío con NCasillas contenedores
 DICCIONARIO CREAR(){
     DICCIONARIO A = (char**) malloc(NCasillas*sizeof(char*));
