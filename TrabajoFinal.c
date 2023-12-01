@@ -28,8 +28,7 @@ int main(){
     return 0; 
 }
 
-//--------------------- FUNCIONES
-// MENU
+//--------------------- MENU
 void menu (DICCIONARIO diccionario){
     int value;
     char palabra[12];
@@ -67,11 +66,13 @@ void menu (DICCIONARIO diccionario){
         printf("Programa Terminado.");
         break;
     default:
-        printf("Incorrecta Opcion. Vuelva a intentar.\n");
+        printf("Opcion invalida. Vuelva a intentar.\n");
         menu(diccionario);
         break;
     }
 }
+
+//--------------------- FUNCIONES
 // Crea un diccionario vacío con NCasillas contenedores
 DICCIONARIO CREAR(){
     DICCIONARIO A = (char**) malloc(NCasillas*sizeof(char*));
